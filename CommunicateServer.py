@@ -2,11 +2,34 @@ import json
 import socket
 from User import User
 
+import socket
+import json
+
 class CommunicateServer:
+    """
+    A class representing a server for communication.
+
+    Attributes:
+    - socket: The socket object used for communication.
+
+    Methods:
+    - __init__(self, sock=socket.socket(socket.AF_INET6)): Initializes the CommunicateServer object.
+    - serve(self): Starts the server and listens for incoming messages.
+    """
+
     def __init__(self, sock=socket.socket(socket.AF_INET6)):
+        """
+        Initializes the CommunicateServer object.
+
+        Parameters:
+        - sock (socket.socket): The socket object used for communication.
+        """
         self.socket = sock
 
     def serve(self):
+        """
+        Starts the server and listens for incoming messages.
+        """
         while True:
             data = self.socket.recvfrom(1024)
             print(data)
@@ -40,11 +63,6 @@ class CommunicateServer:
                     self.socket.sendto("user is not online or exits".encode(), (ip, port))
                     print("error, send success")
 
-            elif message["operate"] == "p2g":
-                print("p2g was called")
-                for row in User().select_all():
-                    if row[0] != message["my_username"] and row[2]:
-                        self.socket.sendto(json.dumps(message).encode(), (row[3], row[4]))
                         
 
 def main():
